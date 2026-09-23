@@ -1,7 +1,22 @@
 {
+  "name": "chat-socket",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "prisma:sqlite:generate": "prisma generate --schema prisma/schema.sqlite.prisma",
+    "prisma:sqlite:migrate": "prisma migrate dev --schema prisma/schema.sqlite.prisma",
+    "prisma:postgres:generate": "prisma generate --schema prisma/schema.postgresql.prisma",
+    "prisma:postgres:push": "prisma db push --schema prisma/schema.postgresql.prisma"
+  },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "dotenv": "^17.2.2",
     "express": "^5.2.1",
     "socket.io": "^4.8.1",
     "twig": "^3.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.0"
   }
 }

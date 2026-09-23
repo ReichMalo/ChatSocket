@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Chat</title>
+		<title>{{ title }}</title>
 	<style>
 		* { box-sizing: border-box; }
 		body { margin: 0; font: 16px system-ui, sans-serif; background: #f3f4f6; color: #111827; }
@@ -16,11 +16,22 @@
 		form { display: flex; gap: .5rem; padding: 1rem; border-top: 1px solid #e5e7eb; }
 		input { flex: 1; min-width: 0; padding: .7rem; border: 1px solid #d1d5db; border-radius: .5rem; font: inherit; }
 		button { padding: .7rem 1rem; border: 0; border-radius: .5rem; color: #fff; background: #2563eb; cursor: pointer; }
+		#join-form { display: flex; gap: .5rem; padding: 1rem; border-bottom: 1px solid #e5e7eb; }
+		#join-form input { min-width: 0; }
+		#chat-form { display: none; }
+		.joined #join-form { display: none; }
+		.joined #chat-form { display: flex; }
+		#status { padding: .5rem 1rem; color: #b91c1c; font-size: .9rem; }
 	</style>
 </head>
 <body>
 	<main class="chat">
 		<header>Chat</header>
+		<p id="status" hidden role="status"></p>
+		<form id="join-form">
+			<input id="username" type="text" placeholder="Choisissez un pseudo" maxlength="30" autocomplete="nickname" required>
+			<button type="submit">Rejoindre</button>
+		</form>
 		<ul id="messages" aria-live="polite"></ul>
 		<form id="chat-form">
 			<input id="message" type="text" placeholder="Votre message…" autocomplete="off" required>
@@ -28,37 +39,6 @@
 		</form>
 	</main>
 	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		const socket = io();
-		const username = (prompt('Choisissez un pseudo :') || '').trim().slice(0, 30) || 'Anonyme';
-		const form = document.querySelector('#chat-form');
-		const input = document.querySelector('#message');
-		const messages = document.querySelector('#messages');
-
-		socket.emit('join chat', username);
-
-		socket.on('chat message', message => {
-			const item = document.createElement('li');
-			if (message.system) {
-				item.className = 'system';
-				item.textContent = message.text;
-			} else {
-				const author = document.createElement('strong');
-				author.textContent = message.username;
-				item.append(author, document.createTextNode(message.text));
-			}
-			messages.appendChild(item);
-			messages.scrollTop = messages.scrollHeight;
-		});
-
-		form.addEventListener('submit', event => {
-			event.preventDefault();
-			const text = input.value.trim();
-			if (!text) return;
-			socket.emit('chat message', text);
-			input.value = '';
-			input.focus();
-		});
-	</script>
+	<script type="module" src="/chatSocket.js"></script>
 </body>
 </html>

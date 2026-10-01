@@ -6,8 +6,8 @@
     "start": "node server.js",
     "prisma:sqlite:generate": "prisma generate --schema prisma/schema.sqlite.prisma",
     "prisma:sqlite:migrate": "prisma migrate dev --schema prisma/schema.sqlite.prisma",
-    "prisma:postgres:generate": "prisma generate --schema prisma/schema.postgresql.prisma",
-    "prisma:postgres:push": "prisma db push --schema prisma/schema.postgresql.prisma"
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",

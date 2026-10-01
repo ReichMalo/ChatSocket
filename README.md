@@ -2,18 +2,20 @@
 
 Chat temps reel avec Socket.IO, modules ES, Prisma et persistance des messages.
 
-## Developpement local
+## Developpement local avec PostgreSQL
 
 ```powershell
 Copy-Item .env.example .env
 npm install
-npm run prisma:sqlite:generate
-npm run prisma:sqlite:migrate -- --name init
+npx prisma db push
+npx prisma generate
 npm start
 ```
 
-La base SQLite est creee dans `prisma/dev.db`. Les 100 derniers messages sont
-envoyes a chaque nouvelle connexion.
+Remplacez les valeurs d'exemple de `DATABASE_URL` par l'URL complete fournie
+par Alwaysdata. Le fichier `.env` est ignore par Git car il contient le mot de
+passe de la base de donnees. Les 100 derniers messages sont envoyes a chaque
+nouvelle connexion.
 
 ## Render / PostgreSQL
 
@@ -21,9 +23,8 @@ Definir `DATABASE_URL` avec l'URL PostgreSQL fournie par Render ou AlwaysData,
 puis utiliser ces commandes dans le build/deploiement :
 
 ```bash
-npm install
-npm run prisma:postgres:generate
-npm run prisma:postgres:push
+npm install && npx prisma generate
+npx prisma db push
 ```
 
 La commande de demarrage est `npm start`. Render fournit automatiquement la
